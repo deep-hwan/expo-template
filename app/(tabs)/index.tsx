@@ -1,74 +1,86 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { Spacing, Text } from "@/app/src/@widgets/display";
+import { V } from "@/app/src/@widgets/flex/V";
+import { useAuth } from "@/app/src/providers/AuthProvider";
+import { colors } from "@/app/src/themes/colors";
+import { useRouter } from "../src/providers/RouterProvider";
+import { useTheme } from "../src/providers/ThemeProvider";
 
 export default function HomeScreen() {
+  const router = useRouter();
+  const { user, logout } = useAuth();
+  const { isDarkMode } = useTheme();
+
+  const goToChat = () => {
+    // Navigate to the chat tab
+    router.replace("/(tabs)/chat");
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <V.Column
+      flex={1}
+      padding={{ horizontal: 16, vertical: 16 }}
+      backgroundColor={colors.white}
+    >
+      <Text size={24} weight="bold" color={colors.textColor}>
+        안녕하세요, {user?.name || "사용자"}님!
+      </Text>
+
+      <Spacing size={16} />
+
+      <Text size={16} color={colors.grey[500]}>
+        채팅 앱에 오신 것을 환영합니다.
+      </Text>
+
+      <Spacing size={32} />
+
+      <TouchableOpacity style={styles.chatButton} onPress={goToChat}>
+        <Text size={16} weight="medium" color={colors.white}>
+          채팅하러 가기
+        </Text>
+      </TouchableOpacity>
+
+      <Spacing size={16} />
+
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={async () => {
+          await logout();
+        }}
+      >
+        <Text size={16} weight="medium" color={colors.red[500]}>
+          로그아웃
+        </Text>
+      </TouchableOpacity>
+    </V.Column>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  chatButton: {
+    backgroundColor: colors.keyColor,
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: "center",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  logoutButton: {
+    backgroundColor: colors.white,
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.red[500],
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  modeButton: {
+    backgroundColor: colors.grey[100],
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  activeButton: {
+    backgroundColor: colors.keyColor,
   },
 });
