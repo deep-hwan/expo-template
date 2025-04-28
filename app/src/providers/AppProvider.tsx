@@ -9,6 +9,7 @@ import getFontSource from "../utils/getFontSource";
 import { AuthProvider } from "./AuthProvider";
 import { ChatProvider } from "./ChatProvider";
 import { RouterProvider } from "./RouterProvider";
+import { StatusBarProvider } from "./StatusBarProvider";
 import { ThemeProvider } from "./ThemeProvider";
 
 export default function AppProvider({
@@ -54,15 +55,17 @@ export default function AppProvider({
           <AuthProvider>
             <ChatProvider>
               <ThemeProvider>
-                <RouterProvider>
-                  {!splashAnimationComplete ? (
-                    <Splash
-                      onAnimationComplete={handleSplashAnimationComplete}
-                    />
-                  ) : (
-                    children
-                  )}
-                </RouterProvider>
+                <StatusBarProvider>
+                  <RouterProvider>
+                    {!splashAnimationComplete ? (
+                      <Splash
+                        onAnimationComplete={handleSplashAnimationComplete}
+                      />
+                    ) : (
+                      children
+                    )}
+                  </RouterProvider>
+                </StatusBarProvider>
               </ThemeProvider>
             </ChatProvider>
           </AuthProvider>
