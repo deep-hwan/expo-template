@@ -1,6 +1,5 @@
-import BlurLayer from './BlurLayer';
-import {Divider} from './Divider';
-import {Spacing} from './Spacing';
-import Text from './Text';
-
-export {BlurLayer, Divider, Spacing, Text};
+export * from "./BlurLayer";
+export * from "./Divider";
+export * from "./Image";
+export * from "./Spacing";
+export * from "./Text";

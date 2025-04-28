@@ -16,6 +16,7 @@ interface TextProps extends RNTextProps {
   color?: string;
   align?: "auto" | "left" | "right" | "center" | "justify";
   style?: StyleProp<TextStyle>;
+  lineHeight?: number;
 }
 
 export const Text = ({
@@ -25,6 +26,7 @@ export const Text = ({
   color = colors.textColor,
   align,
   style,
+  lineHeight,
   ...props
 }: TextProps) => {
   const getFontFamily = () => {
@@ -47,6 +49,7 @@ export const Text = ({
         { fontFamily: getFontFamily() },
         { color },
         align && { textAlign: align },
+        lineHeight !== undefined && { lineHeight },
         style,
       ]}
       {...props}
